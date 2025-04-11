@@ -11,31 +11,12 @@ function parseDuration(duration) {
 }
 
 async function getChannelVideos(channelId) {
-    // const channelResponse = await fetch(
-    //     `https://www.googleapis.com/youtube/v3/channels?id=${channelId}&key=${process.env.YOUTUBE_API_KEY}&part=contentDetails`
-    // );
-    // const channelData = await channelResponse.json();
-    // const uploadsPlaylistId = channelData.items[0].contentDetails.relatedPlaylists.uploads;
-
-    // console.log(uploadsPlaylistId == channelId)
-
-        // // Continue with existing video duration fetching code
-        // const videoResponse = await fetch(
-        //     `https://www.googleapis.com/youtube/v3/videos?id=${allVideoIds.join(",")}&key=${process.env.YOUTUBE_API_KEY}&part=contentDetails`
-        // );
-        // const videoData = await videoResponse.json();
-    
-        // const timeData = videoData.items.map(item => (
-        //     parseDuration(item.contentDetails.duration)
-        // ));
-    
-
     // GET playlist with video ids for channel
     var numResults = 0;
     var totalTimeData = [];
     var nextPageToken = "";  // Used to move through page results
 
-    fs.writeFileSync("video_durations.txt", "Video ID,Duration (hours)\n");
+    // fs.writeFileSync("video_durations.txt", "Video ID,Duration (hours)\n");
 
     // Manual inspection shows Annoying Orange currently has just under 2300 videos (2298)
     while (numResults < 2300) {
@@ -120,6 +101,7 @@ function printData(firstHours, secondHours) {
 // Execution point
 async function main() {
     const orangeTimeData = await getChannelVideos("UUi-5OZ2tYuwMLIcEyOsbdRA"); // Had to change channel id prefix from UCi to UUi for some reason, probably (U)ser vs (C)hannel
+    // const ortngtTimeData = await getChannelVideos("UCi-FOL6V9KbvxfXvzdFSsqCw"); // Had to change channel id prefix from UCi to UUi for some reason, probably (U)ser vs (C)hannel
     printData(calcSesameHours(), calcOrangeHours(orangeTimeData));
 }
 
